@@ -1,3 +1,4 @@
+import uuid
 from datetime import datetime, UTC
 from dataclasses import dataclass
 from enum import Enum
@@ -25,6 +26,7 @@ class DocumentType(str, Enum):
 
 
 class Result(BaseModel):
+    document_id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     status: DocumentStatus
     classification: DocumentType
     confidence: float
