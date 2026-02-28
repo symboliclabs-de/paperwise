@@ -1,7 +1,7 @@
 import aiosqlite
 
 from app.config import settings
-from app.models import Result
+from app.models import DocumentStatus, Result
 
 _CREATE_TABLE = """
 CREATE TABLE IF NOT EXISTS documents (
@@ -27,7 +27,7 @@ async def save_document(result: Result) -> str:
             "INSERT OR REPLACE INTO documents (document_id, status, data, created_at) VALUES (?, ?, ?, ?)",
             (
                 result.document_id,
-                result.status,
+                result.status.value,
                 result.model_dump_json(),
                 result.created_at.isoformat(),
             ),
@@ -48,13 +48,16 @@ async def get_document(document_id: str) -> Result | None:
     return Result.model_validate_json(row[0])
 
 
-async def get_documents_by_status(*statuses: str) -> list[Result]:
+async def get_documents_by_status(*statuses: DocumentStatus) -> list[Result]:
     """Returns a list of documents matching the provided statuses"""
+    if not statuses:
+        return []
     placeholders = ",".join("?" for _ in statuses)
+    values = tuple(status.value for status in statuses)
     async with aiosqlite.connect(settings.db_path) as db:
         cursor = await db.execute(
             f"SELECT data FROM documents WHERE status IN ({placeholders}) ORDER BY created_at DESC",
-            statuses,
+            values,
         )
         rows = await cursor.fetchall()
     return [Result.model_validate_json(row[0]) for row in rows]
