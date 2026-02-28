@@ -52,7 +52,9 @@ class OnnxTR:
                     if words:
                         parts.append(" ".join(words))
 
-                    line_text = " ".join(word.get("value", "") for word in line_words if word.get("value"))
+                    line_text = " ".join(
+                        word.get("value", "") for word in line_words if word.get("value")
+                    )
                     if line_text:
                         layout_lines.append(
                             {
@@ -88,7 +90,9 @@ class OnnxTR:
             return True
         if not _LABEL_PATTERN.match(normalized):
             return False
-        return "." in normalized or any(char.isdigit() for char in normalized) or len(normalized) == 1
+        return (
+            "." in normalized or any(char.isdigit() for char in normalized) or len(normalized) == 1
+        )
 
     @staticmethod
     def _normalize_anchor(anchor: str) -> str:
@@ -102,11 +106,7 @@ class OnnxTR:
     @staticmethod
     def _normalize_anchors(anchors: Iterable[str]) -> set[str]:
         """Normalize and deduplicate configured anchors."""
-        return {
-            normalized
-            for token in anchors
-            if (normalized := OnnxTR._normalize_anchor(token))
-        }
+        return {normalized for token in anchors if (normalized := OnnxTR._normalize_anchor(token))}
 
     @staticmethod
     def _avg_confidence(words: list[dict]) -> float:

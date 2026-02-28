@@ -99,7 +99,7 @@ REQUIRED_FIELDS: list[str] = [
     FieldKey.TSN.value,
 ]
 
-KNOWLEDGE_BASE_DIR = Path(__file__).resolve().parents[2] / "knowledge_base"
+KNOWLEDGE_BASE_PATH = Path(__file__).resolve().parents[2] / "knowledge_base"
 
 CLASSIFY_DESCRIPTION = """\
 Document type key: vehicle_registration
@@ -203,24 +203,13 @@ FIELD_HINTS_BY_KEY: dict[FieldKey, str] = {
         "Often near upper-middle section."
     ),
     FieldKey.HALTER_NAME: (
-        "Field C.1.1. Holder surname or company name. "
-        "Usually in C.* holder block."
+        "Field C.1.1. Holder surname or company name. Usually in C.* holder block."
     ),
-    FieldKey.ERSTZULASSUNG: (
-        "Field I. First registration date in DD.MM.YYYY."
-    ),
-    FieldKey.MARKE: (
-        "Field D.1. Manufacturer/brand (e.g. BMW, VOLKSWAGEN)."
-    ),
-    FieldKey.TYP: (
-        "Field D.2. Type/model/variant."
-    ),
-    FieldKey.HSN: (
-        "Field 2.1. Exactly 4 digits."
-    ),
-    FieldKey.TSN: (
-        "Field 2.2. Usually 3 alphanumeric characters; near HSN."
-    ),
+    FieldKey.ERSTZULASSUNG: ("Field I. First registration date in DD.MM.YYYY."),
+    FieldKey.MARKE: ("Field D.1. Manufacturer/brand (e.g. BMW, VOLKSWAGEN)."),
+    FieldKey.TYP: ("Field D.2. Type/model/variant."),
+    FieldKey.HSN: ("Field 2.1. Exactly 4 digits."),
+    FieldKey.TSN: ("Field 2.2. Usually 3 alphanumeric characters; near HSN."),
 }
 
 LAYOUT_HINTS_BY_KEY: dict[FieldKey, LayoutHint] = {
@@ -274,11 +263,10 @@ LAYOUT_HINTS: dict[str, dict[str, Any]] = {
 class VehicleRegistration:
     Schema = Schema
     REQUIRED_FIELDS = REQUIRED_FIELDS
-    KNOWLEDGE_BASE_DIR = KNOWLEDGE_BASE_DIR
+    KNOWLEDGE_BASE_PATH = KNOWLEDGE_BASE_PATH
     CLASSIFY_DESCRIPTION = CLASSIFY_DESCRIPTION
     EXTRACT_ALL = EXTRACT_ALL
     EXTRACT_MISSING = EXTRACT_MISSING
     VALIDATE = VALIDATE
     FIELD_HINTS = FIELD_HINTS
     LAYOUT_HINTS = LAYOUT_HINTS
-
