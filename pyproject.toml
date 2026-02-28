@@ -9,6 +9,8 @@ dependencies = [
     "pydantic-settings>=2.13,<3.0",
     "langchain-core>=1.2,<2.0",
     "langchain-openai>=1.1,<2.0",
+    "onnxtr[cpu-headless]>=0.8",
+    "pdf2image>=1.17",
     "aiosqlite>=0.22",
 ]
 

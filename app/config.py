@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     embedding_model: str = "text-embedding-3-small"
 
     # Ocr provider
-    ocr: str = "rapidocr"
+    ocr: str = "onnxtr"
 
     # Papyrus settings (optional)
     papyrus_url: str = "https://api.papyrusai.de"
