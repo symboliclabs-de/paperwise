@@ -11,6 +11,7 @@ from pydantic import BaseModel, Field
 class OCRResult:
     text: str
     pages: int = 1
+    layout_lines: list[dict[str, Any]] | None = None
 
 
 class DocumentStatus(str, Enum):
