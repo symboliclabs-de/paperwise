@@ -14,7 +14,6 @@ class Document(Protocol):
     EXTRACT_ALL: str
     EXTRACT_MISSING: str
     VALIDATE: str
-    FIELD_HINTS: dict[str, str]
     LAYOUT_HINTS: dict[str, dict[str, Any]]
 
 
