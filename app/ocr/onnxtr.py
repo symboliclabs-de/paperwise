@@ -15,11 +15,11 @@ _LABEL_PATTERN = re.compile(r"^[A-Z0-9]{1,3}(?:\.[A-Z0-9]{1,3}){0,2}$")
 
 class OnnxTR:
     def __init__(self) -> None:
-        """Initialize OnnxTR OCR engine with CPU-friendly defaults."""
         self._engine = ocr_predictor(
             det_arch="db_mobilenet_v3_large",
             reco_arch="crnn_mobilenet_v3_small",
             assume_straight_pages=True,
+            straighten_pages=True,
             preserve_aspect_ratio=True,
             symmetric_pad=True,
         )
@@ -69,7 +69,7 @@ class OnnxTR:
 
     @staticmethod
     def _pages(file_bytes: bytes, mime_type: str) -> list[np.ndarray]:
-        """Get document pages from file bytes"""
+        """Convert input to RGB numpy arrays (native OnnxTR format)."""
         if mime_type == "application/pdf":
             from pdf2image import convert_from_bytes
 
@@ -106,7 +106,9 @@ class OnnxTR:
     @staticmethod
     def _normalize_anchors(anchors: Iterable[str]) -> set[str]:
         """Normalize and deduplicate configured anchors."""
-        return {normalized for token in anchors if (normalized := OnnxTR._normalize_anchor(token))}
+        return {
+            normalized for anchor in anchors if (normalized := OnnxTR._normalize_anchor(anchor))
+        }
 
     @staticmethod
     def _avg_confidence(words: list[dict]) -> float:
